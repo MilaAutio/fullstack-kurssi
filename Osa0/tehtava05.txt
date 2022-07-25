@@ -1,0 +1,21 @@
+
+selain->palvelin: spa GET
+palvelin-->selain: spa html
+
+selain->palvelin: main.css HTTP GET
+palvelin-->selain: main.css
+selain->palvelin: spa.js HTTP GET
+palvelin-->selain: spa.js
+
+note over selain:
+selain alkaa suorittaa js-koodia
+joka pyytää JSON-datan palvelimelta
+end note
+
+selain->palvelin: JSON-tiedosto HTTP GET
+palvelin-->selain: palauttaa JSON-tiedoston
+
+note over selain:
+selain suorittaa tapahtumankäsittelijän
+joka renderöi muistiinpanot näytölle
+end note

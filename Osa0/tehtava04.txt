@@ -1,0 +1,27 @@
+selain->palvelin: new_note HTTP POST
+note over palvelin: 
+Uudelleenohjauspyyntö 
+osoitteeseen ../notes
+end note
+selain->palvelin: notes HTTP GET
+note over palvelin: 
+Uudelleenohjaus 
+osoitteeseen ../notes
+end note
+selain->palvelin: main.css HTTP GET
+palvelin-->selain: main.css
+selain->palvelin: main.js HTTP GET
+palvelin-->selain: main.js
+
+note over selain:
+selain alkaa suorittaa js-koodia
+joka pyytää JSON-datan palvelimelta
+end note
+
+selain->palvelin: JSON-tiedosto HTTP GET
+palvelin-->selain: palauttaa JSON-tiedoston
+
+note over selain:
+selain suorittaa tapahtumankäsittelijän
+joka renderöi muistiinpanot näytölle
+end note
