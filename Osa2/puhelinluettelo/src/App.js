@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react'
-import personsService from './services/persons'
+import peopleService from './services/people'
 import './index.css'
 
 const App = () => {
-  const [persons, setPersons] = useState([])
+  const [people, setPeople] = useState([])
 
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
@@ -22,7 +22,7 @@ const App = () => {
   }
 
   useEffect(() => {
-    personsService.getAll().then( data => { setPersons(data) } )
+    peopleService.getAll().then( data => { setPeople(data) } )
   }, [])
 
   const addNewContact = (event) => {
@@ -31,12 +31,12 @@ const App = () => {
       name: newName,
       number: newNumber
     }
-    if(persons.some( person => person.name === newName)) {
+    if(people.some( person => person.name === newName)) {
       if (window.confirm(`${newName} is already added to phonebook, replace the old number with new one?`)) {
-        const contact = persons.find(person => person.name === newName)
-        personsService.update(contact.id, newContact)
+        const contact = people.find(person => person.name === newName)
+        peopleService.update(contact.id, newContact)
         .then( updatedContact => {
-          setPersons( persons.map( person => person.id !== contact.id ? person : updatedContact ) )
+          setPeople( people.map( person => person.id !== contact.id ? person : updatedContact ) )
           setMessage(
             `'${updatedContact.name}' updated`
           )
@@ -44,19 +44,17 @@ const App = () => {
             setMessage(null)
           }, 5000)
         } )
-        .catch(error => {
-          setErrorMessage(
-            `'${contact.name}' has already been removed from server`
-          )
+        .catch( function( error ) {
+          setErrorMessage( error.response.data.error )
           setTimeout(() => {
             setErrorMessage(null)
           }, 5000)
         })
       }
     } else {
-      personsService.create(newContact)
+      peopleService.create(newContact)
       .then( returnedPerson => { 
-        setPersons( persons.concat(returnedPerson))
+        setPeople( people.concat(returnedPerson))
         setNewName('')
         setNewNumber('')
 
@@ -67,15 +65,22 @@ const App = () => {
           setMessage(null)
         }, 5000)
       })
+      .catch( function( error ) {
+        console.log(error.response.data.error)
+        setErrorMessage( error.response.data.error )
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
+      })
 
     }
   }
 
   const removeContact = (person) => {
     if (window.confirm(`Delete ${person.name}?`)) {
-      personsService.remove(person.id)
+      peopleService.remove(person.id)
       .then( removedContact => { 
-        setPersons( contacts =>
+        setPeople( contacts =>
           contacts.filter(contact => {
             return contact.id !== person.id;
           })
@@ -90,27 +95,27 @@ const App = () => {
     }
   }
 
-  const filteredPersons = filterValue
-    ? persons.filter( person => person.name.toLowerCase().includes(filterValue.toLowerCase()))
-    : persons
+  const filteredpeople = filterValue
+    ? people.filter( person => person.name.toLowerCase().includes(filterValue.toLowerCase()))
+    : people
 
   return (
     <div>
       <h2>Phonebook</h2>
       <Notification message={message} />
       <Notification message={errorMessage} type='error' />
-      <Filter persons={persons} filterValue={filterValue} handleFilterChange={handleFilterChange} />
+      <Filter people={people} filterValue={filterValue} handleFilterChange={handleFilterChange} />
       <h2>Add New</h2>
       <PersonForm addNewContact={addNewContact} handleNameChange={handleNameChange} handleNumberChange={handleNumberChange} newName={newName} newNumber={newNumber} />
       <h2>Numbers</h2>
-      <Persons filteredPersons={filteredPersons} removeContact={removeContact} />
+      <People filteredpeople={filteredpeople} removeContact={removeContact} />
     </div>
   )
 }
 
 const Notification = (props) => {
   if(props.message) {
-    if( props.type == 'error') {
+    if( props.type === 'error') {
       return (
         <div className="notification error">
           <p>{props.message}</p>
@@ -150,12 +155,12 @@ const PersonForm = (props) => {
   )
 }
 
-const Persons = (props) => {
-  const filteredPersons = props.filteredPersons
+const People = (props) => {
+  const filteredpeople = props.filteredpeople
 
   return (
     <>
-      {filteredPersons.map( person => <p key={person.name}> {person.name} {person.number} <button onClick={() => props.removeContact(person)}>Delete</button></p>)}
+      {filteredpeople.map( person => <p key={person.name}> {person.name} {person.number} <button onClick={() => props.removeContact(person)}>Delete</button></p>)}
     </>
   )
 }
