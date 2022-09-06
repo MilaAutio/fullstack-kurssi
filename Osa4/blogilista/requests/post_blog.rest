@@ -1,0 +1,9 @@
+POST http://localhost:3001/api/blogs
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ik1vY2tpbmdqYXkiLCJpZCI6IjYzMTMyNDZhMWZlOWNhYjk1ODZkNTI4YSIsImlhdCI6MTY2MjIwMTEzNX0.KBRzipm1ONf4HphiKmx4CO4c8-LvnhpZf5zWpnhPA48
+
+{
+  "title": "One simple thing",
+  "author": "Lady Whistledown",
+  "url": "somewhere.url"
+}
