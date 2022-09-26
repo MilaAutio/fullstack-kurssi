@@ -51,6 +51,9 @@ bloglistRouter.delete('/:id', async (req, res) => {
 			console.log('wrong user')
 			res.status(401).end()
 		}
+	} else {
+		console.log('wrong user')
+		res.status(401).end()
 	}
 })
 

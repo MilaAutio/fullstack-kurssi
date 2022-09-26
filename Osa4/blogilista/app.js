@@ -19,6 +19,14 @@ app.use('/api/users', usersRouter)
 app.use('/api/blogs', middleware.tokenExtractor, middleware.userExtractor, bloglistRouter)
 app.use('/api/login', middleware.tokenExtractor, middleware.userExtractor, loginRouter)
 
+console.log(process.env.NODE_ENV)
+
+if (process.env.NODE_ENV === 'test') {
+    const testingRouter = require('./controllers/test')
+    app.use('/api/testing', testingRouter)
+    console.log('in')
+}
+
 app.use(middleware.errorHandler)
 
 module.exports = app
