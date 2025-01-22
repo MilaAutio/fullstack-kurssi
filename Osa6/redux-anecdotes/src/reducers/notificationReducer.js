@@ -15,4 +15,14 @@ const notificationSlice = createSlice({
   }
 })
 
+export const showNotification = (content, seconds) => {
+  return async dispatch => {
+    dispatch(notificationSlice.actions.newNotification(content))
+    setTimeout(function() {
+      console.log('tmeout')
+      dispatch(notificationSlice.actions.removeNotification())
+    }, seconds * 1000)
+  }
+}
+
 export default notificationSlice
