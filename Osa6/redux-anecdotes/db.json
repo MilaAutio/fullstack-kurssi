@@ -44,6 +44,11 @@
       "id": "0581",
       "content": "My test anecdote",
       "votes": 2
+    },
+    {
+      "id": "37a0",
+      "content": "Okay",
+      "votes": 0
     }
   ]
 }
