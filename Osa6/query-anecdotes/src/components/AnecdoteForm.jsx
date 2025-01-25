@@ -1,16 +1,25 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
+import { useContext } from 'react'
+import NotificationContext from '../components/NotificationContext'
 
 const AnecdoteForm = () => {
 
   const queryClient =  useQueryClient()
+  const [notification, notificationDispatch] = useContext(NotificationContext)
 
-  const newNoteMutation = useMutation({
+  const newAnecdoteMutation = useMutation({
       mutationFn: (newAnecdote) => {
-        axios.post('http://localhost:3001/anecdotes', newAnecdote).then(res => res.data)
+        return axios.post('http://localhost:3001/anecdotes', newAnecdote).then(res => res.data)
       },
-      onSuccess: () => {
+      onSuccess: (newAnecdote) => {
         queryClient.invalidateQueries({ queryKey: ['anecdotes'] })
+
+        //notification
+        notificationDispatch({ type: 'ADDNOTIFICATION', payload: '"' + newAnecdote.content + '" added'})
+        setTimeout(() => {
+          notificationDispatch({ type: 'REMOVENOTIFICATION' })
+        }, 5000);
       }
   })
 
@@ -18,7 +27,7 @@ const AnecdoteForm = () => {
     event.preventDefault()
     const content = event.target.anecdote.value
     event.target.anecdote.value = ''
-    newNoteMutation.mutate({ content, votes: 0 })
+    newAnecdoteMutation.mutate({ content, votes: 0 })
   }
 
   return (
