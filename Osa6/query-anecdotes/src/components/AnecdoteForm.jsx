@@ -9,7 +9,7 @@ const AnecdoteForm = () => {
       mutationFn: (newAnecdote) => {
         axios.post('http://localhost:3001/anecdotes', newAnecdote).then(res => res.data)
       },
-      onSuccess: (newAnecdote) => {
+      onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['anecdotes'] })
       }
   })
