@@ -8,6 +8,26 @@ type Results = {
     'average': number
 }
 
+const checkArguments = (args: string[]): number[] => {
+    if (args.length < 3) throw new Error('Not enough arguments')
+    const values = args.slice(2)
+    var valuesAreNumbers = true
+    var numberedValues : number[] = []
+    values.map((value) => {
+        if( isNaN( Number(value) ) ) { 
+            valuesAreNumbers = false 
+        } else {
+            numberedValues.push( parseInt(value) )
+        }
+    })
+
+    if( valuesAreNumbers == true ) {
+      return numberedValues
+    } else {
+      throw new Error('Provided values were not numbers!')
+    }
+}
+
 const calculateExercises = ( days: number[], target: number ) : Results => {
 
     var totalHours = 0
@@ -48,4 +68,15 @@ const calculateExercises = ( days: number[], target: number ) : Results => {
     }
 }
 
-console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 2))
+try {
+    const values = checkArguments(process.argv)
+    const days = values.slice(0, -1)
+    const target = values.pop()
+    console.log(calculateExercises(days, target))
+} catch (error: unknown) {
+    let errorMessage = 'Something bad happened.'
+    if (error instanceof Error) {
+      errorMessage += ' Error: ' + error.message
+    }
+    console.log(errorMessage)
+}
