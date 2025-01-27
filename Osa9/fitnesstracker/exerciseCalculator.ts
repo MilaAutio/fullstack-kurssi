@@ -61,17 +61,17 @@ const calculateExercises = ( days: number[], target: number ) : Results => {
         periodLength: days.length,
         trainingDays: trainingDays,
         success: success,
-        rating: 2,
-        ratingDescription: 'not too bad but could be better',
+        rating: rating,
+        ratingDescription: ratingDescription,
         target: target,
         average: average
     }
 }
 
 try {
-    const values = checkArguments(process.argv)
-    const days = values.slice(0, -1)
-    const target = values.pop()
+    const values: number[] = checkArguments(process.argv)
+    const days: number[] = values.slice(0, -1)
+    const target: number = values.pop() ?? 0
     console.log(calculateExercises(days, target))
 } catch (error: unknown) {
     let errorMessage = 'Something bad happened.'
