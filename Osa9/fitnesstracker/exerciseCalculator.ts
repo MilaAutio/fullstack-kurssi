@@ -28,7 +28,7 @@ const checkArguments = (args: string[]): number[] => {
     }
 };
 
-const calculateExercises = ( days: number[], target: number ) : Results => {
+export const calculateExercises = ( days: number[], target: number ) : Results => {
 
     let totalHours = 0;
     let trainingDays = 0;
@@ -68,15 +68,18 @@ const calculateExercises = ( days: number[], target: number ) : Results => {
     };
 };
 
-try {
-    const values: number[] = checkArguments(process.argv);
-    const days: number[] = values.slice(0, -1);
-    const target: number = values.pop() ?? 0;
-    console.log(calculateExercises(days, target));
-} catch (error: unknown) {
-    let errorMessage = 'Something bad happened.';
-    if (error instanceof Error) {
-      errorMessage += ' Error: ' + error.message;
+
+if (require.main === module) {
+    try {
+        const values: number[] = checkArguments(process.argv);
+        const days: number[] = values.slice(0, -1);
+        const target: number = values.pop() ?? 0;
+        console.log(calculateExercises(days, target));
+    } catch (error: unknown) {
+        let errorMessage = 'Something bad happened.';
+        if (error instanceof Error) {
+        errorMessage += ' Error: ' + error.message;
+        }
+        console.log(errorMessage);
     }
-    console.log(errorMessage);
-}
+};
