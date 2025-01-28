@@ -1,10 +1,10 @@
-import express from 'express'
-import { calculateBmi } from './bmiCalculator'
-const app = express()
+import express from 'express';
+import { calculateBmi } from './bmiCalculator';
+const app = express();
 
 app.get('/hello', (_req, res) => {
-  res.send('Hello Full Stack!')
-})
+  res.send('Hello Full Stack!');
+});
 
 app.get('/bmi', (req, res) => {
     const weight = typeof req.query.weight === "string" ? parseInt(req.query.weight, 10) : null;
@@ -12,22 +12,22 @@ app.get('/bmi', (req, res) => {
 
     if( weight && height ) {
 
-        const bmi = calculateBmi(height, weight)
+        const bmi = calculateBmi(height, weight);
 
-        var results = {
+        const results = {
             weight: weight,
             height: height,
             bmi: bmi
-        }
+        };
     
-        res.send(results)
+        res.send(results);
     } else {
-        res.send({error: "malformatted parameters"})
+        res.send({error: "malformatted parameters"});
     }
-})
+});
 
-const PORT = 3003
+const PORT = 3003;
 
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`)
-})
+  console.log(`Server running on port ${PORT}`);
+});
