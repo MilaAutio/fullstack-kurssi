@@ -1,13 +1,19 @@
 import patients from '../../data/patients';
 import { Patient, NonSensitivePatientData, NewPatient } from '../types';
 import { v1 as uuid } from 'uuid';
+import { PatientSchema } from '../utils';
+
+const patientEntries: Patient[] = patients.map(obj => {
+  const object = PatientSchema.parse(obj);
+  return object;
+});
 
 const getEntries = () : Patient[] => {
-  return patients;
+  return patientEntries;
 };
 
 const getNonSensitiveEntries = (): NonSensitivePatientData[] => {
-    return patients.map(({id, name, dateOfBirth, gender, occupation}) => ({
+    return patientEntries.map(({id, name, dateOfBirth, gender, occupation}) => ({
         id,
         name, 
         dateOfBirth,

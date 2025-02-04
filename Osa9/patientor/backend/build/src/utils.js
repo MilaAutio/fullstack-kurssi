@@ -1,54 +1,27 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.toNewPatientEntry = void 0;
+exports.PatientSchema = exports.NewPatientSchema = void 0;
 const types_1 = require("./types");
-const toNewPatientEntry = (object) => {
-    if (!object || typeof object !== 'object') {
-        throw new Error('Incorrect or missing data');
-    }
-    if ('name' in object && 'dateOfBirth' in object && 'ssn' in object && 'gender' in object && 'occupation' in object) {
-        const newPatient = {
-            name: parseString(object.name),
-            dateOfBirth: parseDate(object.dateOfBirth),
-            ssn: parseSsn(object.ssn),
-            gender: parseGender(object.gender),
-            occupation: parseString(object.occupation)
-        };
-        return newPatient;
-    }
-    throw new Error('Incorrect data: some fields are missing');
-};
-exports.toNewPatientEntry = toNewPatientEntry;
-const parseString = (value) => {
-    if (!value || !isString(value)) {
-        throw new Error('Incorrect or missing value');
-    }
-    return value;
-};
-const isString = (text) => {
-    return typeof text === 'string' || text instanceof String;
-};
-const parseDate = (date) => {
-    if (!date) {
-        throw new Error('Missing date');
-    }
-    if (!isString(date)) {
-        throw new Error('Date is not a string');
-    }
-    if (!isDate(date)) {
-        throw new Error('Date is not a date');
-    }
-    return date;
-};
-const isDate = (date) => {
-    return Boolean(Date.parse(date));
-};
-const parseSsn = (ssn) => {
-    if (!ssn || !isString(ssn) || !isSsn(ssn)) {
-        throw new Error('Incorrect or missing ssn');
-    }
-    return ssn;
-};
+const zod_1 = require("zod");
+exports.NewPatientSchema = zod_1.z.object({
+    name: zod_1.z.string(),
+    dateOfBirth: zod_1.z.string().date(),
+    ssn: zod_1.z.string().refine(ssn => isSsn(ssn), {
+        message: 'Invalid ssn format'
+    }),
+    gender: zod_1.z.nativeEnum(types_1.Gender),
+    occupation: zod_1.z.string()
+});
+exports.PatientSchema = zod_1.z.object({
+    id: zod_1.z.string(),
+    name: zod_1.z.string(),
+    dateOfBirth: zod_1.z.string().date(),
+    ssn: zod_1.z.string().refine(ssn => isSsn(ssn), {
+        message: 'Invalid ssn format'
+    }),
+    gender: zod_1.z.nativeEnum(types_1.Gender),
+    occupation: zod_1.z.string()
+});
 const isSsn = (ssn) => {
     if (typeof ssn !== "string")
         return false;
@@ -80,13 +53,4 @@ const isSsn = (ssn) => {
         return false;
     }
     return true;
-};
-const parseGender = (gender) => {
-    if (!gender || !isString(gender) || !isGender(gender)) {
-        throw new Error('Incorrect or missing gender');
-    }
-    return gender;
-};
-const isGender = (gender) => {
-    return Object.values(types_1.Gender).map(value => value.toString()).includes(gender);
 };

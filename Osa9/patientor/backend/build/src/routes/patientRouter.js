@@ -6,22 +6,24 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const patientService_1 = __importDefault(require("../services/patientService"));
 const utils_1 = require("../utils");
+const zod_1 = require("zod");
 const router = express_1.default.Router();
 router.get('/', (_req, res) => {
     res.send(patientService_1.default.getNonSensitiveEntries());
 });
 router.post('/', (req, res) => {
     try {
-        const newPatient = (0, utils_1.toNewPatientEntry)(req.body);
+        const newPatient = utils_1.NewPatientSchema.parse(req.body);
         const addedEntry = patientService_1.default.addPatient(newPatient);
         res.json(addedEntry);
     }
     catch (error) {
-        let errorMessage = 'Something went wrong.';
-        if (error instanceof Error) {
-            errorMessage += ' Error: ' + error.message;
+        if (error instanceof zod_1.z.ZodError) {
+            res.status(400).send({ error: error.issues });
         }
-        res.status(400).send(errorMessage);
+        else {
+            res.status(400).send({ error: 'unknown error' });
+        }
     }
 });
 exports.default = router;

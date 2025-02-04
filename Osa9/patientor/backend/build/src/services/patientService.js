@@ -5,11 +5,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const patients_1 = __importDefault(require("../../data/patients"));
 const uuid_1 = require("uuid");
+const utils_1 = require("../utils");
+const patientEntries = patients_1.default.map(obj => {
+    const object = utils_1.PatientSchema.parse(obj);
+    return object;
+});
 const getEntries = () => {
-    return patients_1.default;
+    return patientEntries;
 };
 const getNonSensitiveEntries = () => {
-    return patients_1.default.map(({ id, name, dateOfBirth, gender, occupation }) => ({
+    return patientEntries.map(({ id, name, dateOfBirth, gender, occupation }) => ({
         id,
         name,
         dateOfBirth,
