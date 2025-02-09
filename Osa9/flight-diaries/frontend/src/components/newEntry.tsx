@@ -63,29 +63,32 @@ const NewEntry = () => {
             <form onSubmit={addNewEntry}>
                 <p>
                     <label>Date: </label>
-                    <input type="text" id="date"></input>
+                    <input type="date" id="date"></input>
                 </p>
-                <p>
-                    <label>Visibility: </label>
-                    <select id="visibility">
-                        <option disabled>Choose</option>
-                        <option value="great">Great</option>
-                        <option value="good">Good</option>
-                        <option value="ok">Ok</option>
-                        <option value="poor">Poor</option>
-                    </select>
-                </p>
-                <p>
-                    <label>Weather: </label>
-                    <select id="weather">
-                        <option disabled>Choose</option>
-                        <option value="sunny">Sunny</option>
-                        <option value="rainy">Rainy</option>
-                        <option value="cloudy">Cloudy</option>
-                        <option value="stormy">Stormy</option>
-                        <option value="windy">Windy</option>
-                    </select>
-                </p>
+                <fieldset>
+                    <legend>Visibility: </legend>
+                    <input type="radio" id="great" name="visibility" value="great" defaultChecked />
+                    <label htmlFor="great">Great</label>     
+                    <input type="radio" id="good" name="visibility" value="good" />
+                    <label htmlFor="good">Good</label>
+                    <input type="radio" id="ok" name="visibility" value="ok" />
+                    <label htmlFor="ok">Ok</label>
+                    <input type="radio" id="poor" name="visibility" value="poor" />
+                    <label htmlFor="poor">Poor</label>
+                </fieldset>
+                <fieldset>
+                    <legend>Weather: </legend>
+                    <input type="radio" id="sunny" name="weather" value="sunny" defaultChecked />
+                    <label htmlFor="sunny">Sunny</label>     
+                    <input type="radio" id="rainy" name="weather" value="rainy" />
+                    <label htmlFor="rainy">Rainy</label>
+                    <input type="radio" id="cloudy" name="weather" value="cloudy" />
+                    <label htmlFor="cloudy">Cloudy</label>
+                    <input type="radio" id="stormy" name="weather" value="stormy" />
+                    <label htmlFor="stormy">Stormy</label>
+                    <input type="radio" id="windy" name="weather" value="windy" />
+                    <label htmlFor="windy">Windy</label>
+                </fieldset>
                 <p>
                     <label>Comment: </label><br></br>
                     <textarea id="comment"></textarea>
