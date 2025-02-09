@@ -1,12 +1,13 @@
 import axios from "axios";
 import { DiaryEntriesContext } from '../contexts/diaryEntriesContext';
-import { useContext } from "react";
+import { useContext, useState } from "react";
 
 const NewEntry = () => {
 
     const { diaryEntries, setDiaryEntries } = useContext(DiaryEntriesContext);
+    const [ errorMessage, setErrorMessage ] = useState<string>('');
 
-    const addNewEntry = (event: React.SyntheticEvent) => {
+    const addNewEntry = async (event: React.SyntheticEvent) => {
         event.preventDefault();
 
         const target = event.target as typeof event.target & {
@@ -29,24 +30,40 @@ const NewEntry = () => {
                 comment: comment,
             };
     
-            axios.post('http://localhost:3000/api/diaries', newEntry).then((response) => {
+            try {
+                const response = await axios.post('http://localhost:3000/api/diaries', newEntry);
                 setDiaryEntries([...diaryEntries, response.data]);
-
+    
                 target.date.value = "";
                 target.visibility.value = "";
                 target.weather.value = "";
                 target.comment.value = "";
-            })
+            } catch( error ) {
+                if (axios.isAxiosError(error)) {
+                    setErrorMessage(error.response?.data)
+                    setTimeout(() => {
+                        setErrorMessage('')
+                    }, 3000)
+                } else {
+                    console.error(error);
+                }
+            }
+        } else {
+            setErrorMessage('All fields are required.')
+            setTimeout(() => {
+                setErrorMessage('')
+            }, 3000)
         }
     };
 
     return (
         <div>
             <h3>Add new entry</h3>
+            { errorMessage && <div style={{color: "red"}}>{errorMessage}</div> }
             <form onSubmit={addNewEntry}>
                 <p>
                     <label>Date: </label>
-                    <input type="date" id="date"></input>
+                    <input type="text" id="date"></input>
                 </p>
                 <p>
                     <label>Visibility: </label>
