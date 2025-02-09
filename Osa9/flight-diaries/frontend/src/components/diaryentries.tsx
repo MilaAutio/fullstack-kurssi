@@ -1,11 +1,20 @@
-import { DiaryEntry } from "../types";
+import axios from 'axios';
+import { useEffect, useContext } from 'react'
+import { DiaryEntriesContext } from '../contexts/diaryEntriesContext';
 
-//Fix cors policy next
+const DiaryEntries = () => {
 
-const DiaryEntries = (props: { diaryEntries: DiaryEntry[]}) => {
+    const { diaryEntries, setDiaryEntries } = useContext(DiaryEntriesContext);
+
+    useEffect(() => {
+      axios.get('http://localhost:3000/api/diaries').then(response => {
+        setDiaryEntries(response.data)
+      })
+    }, [])
+
     return (
         <div>
-            { props.diaryEntries && props.diaryEntries.map((diaryEntry, index) => {
+            { diaryEntries && diaryEntries.map((diaryEntry, index) => {
                 return <div key={index}>
                     <p><b>{diaryEntry.date}</b></p>
                     <p>
