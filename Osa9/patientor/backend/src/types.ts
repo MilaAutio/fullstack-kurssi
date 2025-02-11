@@ -13,7 +13,7 @@ export interface Patient extends NewPatient {
     id: string;
 }
 
-export type NonSensitivePatientData = Omit<Patient, 'ssn'>;
+export type NonSensitivePatientData = Omit<Patient, 'ssn' | 'entries'>;
 
 export enum Gender {
     Male = "male",

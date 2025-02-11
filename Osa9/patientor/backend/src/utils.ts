@@ -1,6 +1,10 @@
 import { Gender } from "./types";
 import { z } from 'zod';
 
+const entrySchema = z.object({
+
+});
+
 export const NewPatientSchema = z.object({
     name: z.string(),
     dateOfBirth: z.string().date(),
@@ -8,18 +12,12 @@ export const NewPatientSchema = z.object({
         message: 'Invalid ssn format'
     }),
     gender: z.nativeEnum(Gender),
-    occupation: z.string()
+    occupation: z.string(),
+    entries: z.array(entrySchema)
 });
 
-export const PatientSchema = z.object({
-    id: z.string(),
-    name: z.string(),
-    dateOfBirth: z.string().date(),
-    ssn: z.string().refine(ssn => isSsn(ssn), {
-        message: 'Invalid ssn format'
-    }),
-    gender: z.nativeEnum(Gender),
-    occupation: z.string()
+export const PatientSchema = NewPatientSchema.extend({
+    id: z.string()
 });
 
 const isSsn = (ssn: string): boolean => {

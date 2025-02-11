@@ -24,4 +24,17 @@ router.post('/', (req, res) => {
   }
 });
 
+router.get('/:id', (req, res) => {
+  try {
+    const patientData = patientService.getPatientData(req.params.id);
+    res.send(patientData);
+  } catch( error: unknown ) {
+    if (error instanceof z.ZodError) {
+      res.status(400).send({ error: error.issues });
+    } else {
+      res.status(400).send({ error: 'unknown error' });
+    }
+  }
+});
+
 export default router;

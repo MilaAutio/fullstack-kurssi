@@ -4,7 +4,8 @@ import { v1 as uuid } from 'uuid';
 import { PatientSchema } from '../utils';
 
 const patientEntries: Patient[] = patients.map(obj => {
-  const object = PatientSchema.parse(obj);
+  const objectWithEntries = { ...obj, entries: (obj as { entries?: unknown }).entries ?? [] };
+  const object = PatientSchema.parse(objectWithEntries);
   return object;
 });
 
@@ -32,8 +33,14 @@ const addPatient = ( entry: NewPatient ): Patient => {
   return newPatient;
 };
 
+const getPatientData = ( id: string ): Patient | undefined => {
+  const patient = patientEntries.find((patient) => patient.id === id);
+  return patient;
+};
+
 export default {
   getEntries,
   addPatient,
-  getNonSensitiveEntries
+  getNonSensitiveEntries,
+  getPatientData
 };
