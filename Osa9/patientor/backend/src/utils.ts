@@ -1,9 +1,43 @@
 import { Gender } from "./types";
 import { z } from 'zod';
 
-const entrySchema = z.object({
-
+// Base schema for shared properties
+const baseEntrySchema = z.object({
+    id: z.string(),
+    date: z.string().date(),
+    specialist: z.string(),
+    description: z.string()
 });
+  
+const occupationalHealthcareSchema = baseEntrySchema.extend({
+    type: z.literal("OccupationalHealthcare"),
+    diagnosisCodes: z.array(z.string()).optional(),
+    employerName: z.string(),
+    sickLeave: z.object({
+        startDate: z.string().date(),
+        endDate: z.string().date()
+    }).optional()
+});
+  
+const hospitalEntrySchema = baseEntrySchema.extend({
+    type: z.literal("Hospital"),
+    diagnosisCodes: z.array(z.string()),
+    discharge: z.object({
+      date: z.string().date(),
+      criteria: z.string()
+    })
+});
+
+const healthCheckEntrySchema = baseEntrySchema.extend({
+    type: z.literal("HealthCheck"),
+    healthCheckRating: z.number(),
+});
+  
+const entrySchema = z.discriminatedUnion("type", [
+    occupationalHealthcareSchema,
+    hospitalEntrySchema,
+    healthCheckEntrySchema
+]);
 
 export const NewPatientSchema = z.object({
     name: z.string(),

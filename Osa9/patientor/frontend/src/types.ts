@@ -19,4 +19,27 @@ export interface Patient {
   dateOfBirth?: string;
 }
 
+interface BaseEntry {
+  id: string;
+  date: Date;
+  specialist: string;
+  description: string;
+}
+
+interface OccupationalHealthcare extends BaseEntry {
+    type: "OccupationalHealthcare";
+    employerName: string;
+}
+
+interface HospitalEntry extends BaseEntry {
+  type: "Hospital";
+  diagnosisCodes: number[];
+  discharge: {
+    date: Date;
+    criteria: string;
+  }
+}
+
+export type Entry = OccupationalHealthcare | HospitalEntry;
+
 export type PatientFormValues = Omit<Patient, "id" | "entries">;
