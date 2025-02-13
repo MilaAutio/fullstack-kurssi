@@ -17,6 +17,7 @@ export interface Patient {
   gender: Gender;
   ssn?: string;
   dateOfBirth?: string;
+  entries: Entry[];
 }
 
 interface BaseEntry {
@@ -29,17 +30,27 @@ interface BaseEntry {
 interface OccupationalHealthcare extends BaseEntry {
     type: "OccupationalHealthcare";
     employerName: string;
+    diagnosisCodes?: string[];
+    sickLeave?: {
+      startDate: Date;
+      endDate: Date;
+    }
 }
 
 interface HospitalEntry extends BaseEntry {
   type: "Hospital";
-  diagnosisCodes: number[];
+  diagnosisCodes?: string[];
   discharge: {
     date: Date;
     criteria: string;
   }
 }
 
-export type Entry = OccupationalHealthcare | HospitalEntry;
+interface HealthCheckEntry extends BaseEntry {
+  type: "HealthCheck";
+  healthCheckRating: number;
+}
+
+export type Entry = OccupationalHealthcare | HospitalEntry | HealthCheckEntry;
 
 export type PatientFormValues = Omit<Patient, "id" | "entries">;
