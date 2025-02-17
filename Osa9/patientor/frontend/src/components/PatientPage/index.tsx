@@ -1,11 +1,12 @@
 import { useParams } from "react-router-dom";
-import { Patient, Entry } from "../../types";
+import { Patient, Entry, Diagnose } from "../../types";
 import { useEffect, useState } from "react";
 import patientService from "../../services/patients";
 
 const PatientPage = ( ) => {
 
     const [patient, setPatientData] = useState<Patient>();
+    const [diagnoses, setDiagnoses] = useState<Diagnose[]>();
     const { id } = useParams();
 
     useEffect(() => {    
@@ -16,6 +17,12 @@ const PatientPage = ( ) => {
             }
         };
         void fetchPatientData();
+
+        const fetchDiagnosesList = async () => {
+            const diagnosesData = await patientService.getDiagnoses();
+            setDiagnoses(diagnosesData);
+          };
+          void fetchDiagnosesList();
     }, [id]);
 
     if(!patient) {
@@ -40,27 +47,31 @@ const PatientPage = ( ) => {
             <p><b>Occupation:</b> {patient.occupation}</p>
             <h2>Entries:</h2>
             {patient.entries && patient.entries.map((entry) => (
-                <PatientEntries key={entry.id} entry={entry} />
+                <PatientEntries entry={entry} diagnoses={diagnoses} />
             ))}
         </div>
     );
 };
 
-const PatientEntries = ({ entry }: { entry: Entry }) => {
-    console.log(entry);
+const PatientEntries = ({ entry, diagnoses }: { entry: Entry, diagnoses: Diagnose[] | undefined }) => {
     return (
       <div>
-        <p><b>{entry.date}</b> 
+        <p><b>{entry.date.toString()}</b> 
         <br></br>{entry.description}</p>
         { (entry.type === 'OccupationalHealthcare' || entry.type === 'Hospital') && entry.diagnosisCodes && (
             <ul>
-              {entry.diagnosisCodes.map((code) => (
-                <li key={code}>{code}</li>
-              ))}
+              {diagnoses && entry.diagnosisCodes.map((code) => {
+              const diagnose = diagnoses.find( (diagnose) => diagnose.code === code );
+              return (
+                <li key={code}>
+                  {code} {diagnose?.name}
+                </li>
+              );
+            })}
             </ul>
           )}
       </div>
     );
-  };
+};
 
 export default PatientPage;
