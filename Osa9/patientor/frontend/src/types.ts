@@ -27,7 +27,7 @@ interface BaseEntry {
   description: string;
 }
 
-interface OccupationalHealthcare extends BaseEntry {
+export interface OccupationalHealthcare extends BaseEntry {
     type: "OccupationalHealthcare";
     employerName: string;
     diagnosisCodes?: string[];
@@ -37,7 +37,7 @@ interface OccupationalHealthcare extends BaseEntry {
     }
 }
 
-interface HospitalEntry extends BaseEntry {
+export interface HospitalEntry extends BaseEntry {
   type: "Hospital";
   diagnosisCodes?: string[];
   discharge: {
@@ -46,7 +46,7 @@ interface HospitalEntry extends BaseEntry {
   }
 }
 
-interface HealthCheckEntry extends BaseEntry {
+export interface HealthCheckEntry extends BaseEntry {
   type: "HealthCheck";
   healthCheckRating: number;
 }
