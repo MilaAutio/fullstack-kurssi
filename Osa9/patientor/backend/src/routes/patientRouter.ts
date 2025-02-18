@@ -1,7 +1,7 @@
 import express, { Response } from 'express';
 import patientService from '../services/patientService';
 import { NonSensitivePatientData } from '../types';
-import { NewPatientSchema } from '../utils';
+import { NewPatientSchema, NewEntrySchema } from '../utils';
 import { z } from 'zod';
 
 const router = express.Router();
@@ -28,6 +28,21 @@ router.get('/:id', (req, res) => {
   try {
     const patientData = patientService.getPatientData(req.params.id);
     res.send(patientData);
+  } catch( error: unknown ) {
+    if (error instanceof z.ZodError) {
+      res.status(400).send({ error: error.issues });
+    } else {
+      res.status(400).send({ error: 'unknown error' });
+    }
+  }
+});
+
+router.post('/:id/entries', (req, res) => {
+  try {
+    const patientID = req.params.id;
+    const newEntry = NewEntrySchema.parse(req.body);
+    const addedEntry = patientService.addPatientEntry(patientID, newEntry);
+    res.json(addedEntry);
   } catch( error: unknown ) {
     if (error instanceof z.ZodError) {
       res.status(400).send({ error: error.issues });

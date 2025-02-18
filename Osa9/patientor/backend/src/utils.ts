@@ -3,7 +3,6 @@ import { z } from 'zod';
 
 // Base schema for shared properties
 const baseEntrySchema = z.object({
-    id: z.string(),
     date: z.string().date(),
     specialist: z.string(),
     description: z.string()
@@ -33,10 +32,30 @@ const healthCheckEntrySchema = baseEntrySchema.extend({
     healthCheckRating: z.number(),
 });
   
-const entrySchema = z.discriminatedUnion("type", [
+export const NewEntrySchema = z.discriminatedUnion("type", [
     occupationalHealthcareSchema,
     hospitalEntrySchema,
     healthCheckEntrySchema
+]);
+
+// Extend each schema with the `id` property
+const occupationalHealthcareWithId = occupationalHealthcareSchema.extend({
+    id: z.string(),
+});
+  
+const hospitalWithId = hospitalEntrySchema.extend({
+    id: z.string(),
+});
+  
+const healthCheckWithId = healthCheckEntrySchema.extend({
+    id: z.string(),
+});
+  
+  // Now create the union
+export const EntrySchema = z.discriminatedUnion("type", [
+    occupationalHealthcareWithId,
+    hospitalWithId,
+    healthCheckWithId,
 ]);
 
 export const NewPatientSchema = z.object({
@@ -47,7 +66,7 @@ export const NewPatientSchema = z.object({
     }),
     gender: z.nativeEnum(Gender),
     occupation: z.string(),
-    entries: z.array(entrySchema)
+    entries: z.array(EntrySchema)
 });
 
 export const PatientSchema = NewPatientSchema.extend({

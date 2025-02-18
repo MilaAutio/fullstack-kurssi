@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { NewPatientSchema } from './utils';
+import { NewPatientSchema, EntrySchema, NewEntrySchema } from './utils';
 
 export interface Diagnose {
     code: string,
@@ -21,4 +21,6 @@ export enum Gender {
     Other = "other"
 };
 
-export type NewDiaryEntry = z.infer<typeof NewPatientSchema>; 
+export type NewDiaryEntry = z.infer<typeof NewEntrySchema>; 
+
+export type DiaryEntry = z.infer<typeof EntrySchema>;
