@@ -32,6 +32,58 @@ a:hover {
   margin-top: 20px;
 }
 
+button, input[type=submit] {
+  padding: 12px 17px;
+  line-height: 1.2;
+  border-radius: 5px;
+  background-color: rgb(128, 128, 188);
+  border: 0;
+  color: #fff;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s ease-out;
+  display: block;
+  width: fit-content;
+}
+
+input, textarea {
+  padding: 7px 10px;
+  border: 0;
+  background-color: #fff;
+  border-radius: 5px;
+  width: 100%;
+  max-width: 500px;
+  display: block;
+  box-sizing: border-box;
+}
+textarea {
+  height: 100px;
+}
+
+.new-entry-form {
+  position: relative;
+  display: block;
+  box-sizing: border-box;
+  max-width: 500px;
+  background-color: #eaeaea;
+  padding: 20px;
+  border-radius: 7px;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.error-message {
+  background-color: rgb(246, 99, 99);
+  color: #fff;
+  padding: 7px 15px;
+  border-radius: 5px;
+  display: block;
+  margin-bottom: 15px;
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
@@ -39,8 +91,5 @@ a:hover {
   }
   a:hover {
     color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
   }
 }

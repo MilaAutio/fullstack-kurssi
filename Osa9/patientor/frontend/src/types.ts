@@ -21,7 +21,6 @@ export interface Patient {
 }
 
 interface BaseEntry {
-  id: string;
   date: Date;
   specialist: string;
   description: string;
@@ -51,6 +50,8 @@ export interface HealthCheckEntry extends BaseEntry {
   healthCheckRating: number;
 }
 
-export type Entry = OccupationalHealthcare | HospitalEntry | HealthCheckEntry;
+export type NewEntry = OccupationalHealthcare | HospitalEntry | HealthCheckEntry;
+
+export type Entry = NewEntry & { id: string };
 
 export type PatientFormValues = Omit<Patient, "id" | "entries">;
