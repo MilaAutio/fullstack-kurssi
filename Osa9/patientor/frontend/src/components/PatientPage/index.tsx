@@ -3,12 +3,13 @@ import { Patient, Diagnose, Entry } from "../../types";
 import { useEffect, useState } from "react";
 import patientService from "../../services/patients";
 import PatientEntries from "./patientEntries";
-import AddNewEntryForm from "./addNewEntry";
+import AddNewEntryForm from "../AddNewEntry/form";
+import { DiagnosesContext } from "./diagnosesContext";
 
 const PatientPage = ( ) => {
 
     const [patient, setPatientData] = useState<Patient>();
-    const [diagnoses, setDiagnoses] = useState<Diagnose[]>();
+    const [diagnoses, setDiagnoses] = useState<Diagnose[] | undefined>(undefined);
     const [entries, setEntries] = useState<Entry[]>([]);
     const { id } = useParams();
 
@@ -38,7 +39,7 @@ const PatientPage = ( ) => {
     }
 
     return (
-        <div>
+        <DiagnosesContext.Provider value={diagnoses}>
             <h2>
                 {patient.name}
                 <span style={{ marginLeft: '1rem' }}>
@@ -52,9 +53,9 @@ const PatientPage = ( ) => {
             <AddNewEntryForm patientID={patient.id} entries={entries} setEntries={setEntries} />
             { entries && ( <h2>Entries:</h2> )}
             { entries && entries.map((entry) => (
-                <PatientEntries key={entry.id} entry={entry} diagnoses={diagnoses} />
+                <PatientEntries key={entry.id} entry={entry} />
             ))}
-        </div>
+        </DiagnosesContext.Provider>
     );
 };
 

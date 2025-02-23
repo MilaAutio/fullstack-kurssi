@@ -32,7 +32,7 @@ a:hover {
   margin-top: 20px;
 }
 
-button, input[type=submit] {
+button, input[type=submit], .button {
   padding: 12px 17px;
   line-height: 1.2;
   border-radius: 5px;
@@ -92,6 +92,33 @@ label {
   border-radius: 5px;
   display: block;
   margin-bottom: 15px;
+}
+
+#diagnosesCodes {
+  background-color: unset;
+  padding: 0;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+#diagnosesCodes:focus {
+  outline: unset;
+}
+
+.button.select-values {
+  border-radius: 5px;
+  text-transform: none;
+  font-size: 13px;
+  padding: 7px 10px;
+}
+
+select {
+  max-width: 100%;
+  box-sizing: border-box;
+  display: block;
+  margin-top: 5px;
+  border-radius: 7px;
+  padding: 10px;
 }
 
 @media (prefers-color-scheme: light) {

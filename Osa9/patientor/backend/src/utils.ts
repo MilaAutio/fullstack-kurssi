@@ -10,7 +10,7 @@ const baseEntrySchema = z.object({
   
 const occupationalHealthcareSchema = baseEntrySchema.extend({
     type: z.literal("OccupationalHealthcare"),
-    diagnosisCodes: z.array(z.string()).optional(),
+    diagnosesCodes: z.array(z.string()).optional(),
     employerName: z.string(),
     sickLeave: z.object({
         startDate: z.string().date(),
@@ -20,7 +20,7 @@ const occupationalHealthcareSchema = baseEntrySchema.extend({
   
 const hospitalEntrySchema = baseEntrySchema.extend({
     type: z.literal("Hospital"),
-    diagnosisCodes: z.array(z.string()),
+    diagnosesCodes: z.array(z.string()),
     discharge: z.object({
       date: z.string().date(),
       criteria: z.string()

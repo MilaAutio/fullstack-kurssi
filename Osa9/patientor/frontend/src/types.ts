@@ -29,7 +29,7 @@ export interface BaseEntry {
 export interface OccupationalHealthcare extends BaseEntry {
     type: "OccupationalHealthcare";
     employerName: string;
-    diagnosisCodes?: string[];
+    diagnosesCodes?: string[];
     sickLeave?: {
       startDate: Date;
       endDate: Date;
@@ -38,7 +38,7 @@ export interface OccupationalHealthcare extends BaseEntry {
 
 export interface HospitalEntry extends BaseEntry {
   type: "Hospital";
-  diagnosisCodes?: string[];
+  diagnosesCodes?: string[];
   discharge: {
     date: Date;
     criteria: string;
