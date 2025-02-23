@@ -46,7 +46,7 @@ button, input[type=submit] {
   width: fit-content;
 }
 
-input, textarea {
+input:not([type=radio]):not([type=submit]), textarea {
   padding: 7px 10px;
   border: 0;
   background-color: #fff;
@@ -60,19 +60,29 @@ textarea {
   height: 100px;
 }
 
+label {
+  font-size: 14px;
+}
+
 .new-entry-form {
   position: relative;
   display: block;
   box-sizing: border-box;
   max-width: 500px;
   background-color: #eaeaea;
-  padding: 20px;
+  padding: 35px 25px;
   border-radius: 7px;
+}
+
+.new-entry-form h3 {
+  margin-top: 0;
+  color: rgb(128, 128, 188);
 }
 
 .buttons {
   display: flex;
   justify-content: space-between;
+  margin-top: 40px;
 }
 
 .error-message {

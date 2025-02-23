@@ -20,7 +20,7 @@ export interface Patient {
   entries: Entry[];
 }
 
-interface BaseEntry {
+export interface BaseEntry {
   date: Date;
   specialist: string;
   description: string;
